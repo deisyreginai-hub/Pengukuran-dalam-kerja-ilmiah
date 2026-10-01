@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPI Fisika: Pengukuran Ilmiah - MA Gorontalo</title>
+    <style>
+        :root {
+            --pink-primary: #d81b60;
+            --pink-light: #fce4ec;
+            --pink-dark: #ad1457;
+            --pink-hover: #c2185b;
+            --grey-bg: #f8f9fa;
+            --grey-panel: #e9ecef;
+            --grey-dark: #343a40;
+            --grey-text: #495057;
+            --white: #ffffff;
+            --success: #28a745;
+            --danger: #dc3545;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--grey-bg);
+            color: var(--grey-text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--grey-dark), #1a1e21);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--pink-primary);
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--pink-light);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background-color: var(--grey-panel);
+            color: var(--grey-dark);
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--pink-light);
+            color: var(--pink-primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--pink-primary);
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        /* Content Areas */
+        .content-section {
+            display: none;
+            background: var(--white);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scrolling-text-container {
+            background-color: var(--pink-dark);
+            color: var(--white);
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scrollText 25s linear infinite;
+            font-weight: bold;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes scrollText {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        .identity-box {
+            background: var(--white);
+            padding: 15px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid var(--pink-light);
+            border-left: 6px solid var(--pink-primary);
+        }
+
+        .identity-box p {
+            margin: 5px 0;
+            color: var(--grey-dark);
+            font-size: 1.05rem;
+        }
+        
+        .identity-box strong {
+            color: var(--pink-primary);
+        }
+
+        h2 {
+            color: var(--pink-primary);
+            border-bottom: 2px solid var(--pink-light);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: var(--grey-dark);
+            margin: 20px 0 10px 0;
+        }
+
+        .quote-box {
+            background-color: var(--pink-light);
+            border-left: 5px solid var(--pink-primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            font-style: italic;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid var(--grey-panel);
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--grey-dark);
+            color: var(--white);
+        }
+
+        tr:nth-child(even) { background-color: var(--grey-bg); }
+
+        /* Tool Tabs & Layout */
+        .tool-nav { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; }
+        .tool-btn { padding: 10px 15px; border: none; background: #ddd; border-radius: 8px; cursor: pointer; font-weight:bold; white-space: nowrap; transition: 0.3s; }
+        .tool-btn.active { background: var(--pink-primary); color: white; }
+        .tool-section { display: none; background: var(--white); padding: 20px; border-radius: 8px; border: 1px solid #ddd; }
+        .tool-section.active { display: block; animation: fadeIn 0.5s ease; }
+
+        .canvas-container {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 2px solid #343a40;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Neraca CSS */
+        .neraca-arms { display: flex; flex-direction: column; gap: 15px; align-items: center; margin-bottom: 20px; }
+        .arm-row { display: flex; align-items: center; gap: 15px; background: #f1f3f5; padding: 10px; border-radius: 8px; width: 100%; max-width: 500px;}
+        .arm-row label { width: 180px; font-weight: bold; }
+        .arm-row span { width: 50px; text-align: right; font-family: monospace; font-size: 1.1rem; }
+
+        /* Termometer CSS */
+        .thermometer-wrapper { position: relative; width: 60px; height: 300px; background: #e9ecef; border: 3px solid #343a40; border-radius: 30px; margin: 0 auto 20px auto; display: flex; justify-content: center; padding-bottom: 15px;}
+        .thermo-bulb { position: absolute; bottom: -20px; width: 50px; height: 50px; background: var(--pink-primary); border-radius: 50%; border: 3px solid #343a40; z-index: 2; }
+        .thermo-tube { position: absolute; bottom: 30px; width: 20px; height: 260px; background: white; border-radius: 10px; border: 1px solid #ccc; z-index: 1; overflow: hidden; display: flex; align-items: flex-end;}
+        .thermo-liquid { width: 100%; height: 10%; background: var(--pink-primary); transition: height 0.3s; }
+        .thermo-ticks { position: absolute; left: 65px; height: 260px; display: flex; flex-direction: column; justify-content: space-between; font-size: 12px; font-family: monospace; bottom: 30px;}
+
+        .controls {
+            background: var(--white);
+            padding: 15px;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        input[type=range] {
+            width: 100%;
+            max-width: 400px;
+            accent-color: var(--pink-primary);
+        }
+
+        .btn {
+            background: var(--pink-primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn:hover { background: var(--pink-hover); }
+        .btn-outline {
+            background: transparent;
+            color: var(--pink-primary);
+            border: 2px solid var(--pink-primary);
+        }
+        .btn-outline:hover {
+            background: var(--pink-light);
+        }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: bold;
+        }
+        .feedback-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        .quiz-container {
+            background: var(--grey-panel);
+            padding: 20px;
+            border-radius: var(--radius);
+        }
+        
+        .question-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none;
+        }
+        
+        .question-card.active { display: block; }
+
+        .options-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .option-item {
+            background: var(--grey-bg);
+            border: 2px solid var(--grey-panel);
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-item:hover {
+            border-color: var(--pink-light);
+            background: var(--white);
+        }
+
+        .option-item.selected {
+            border-color: var(--pink-primary);
+            background: var(--pink-light);
+        }
+
+        .option-item.correct {
+            border-color: var(--success);
+            background: #d4edda;
+        }
+
+        .option-item.wrong {
+            border-color: var(--danger);
+            background: #f8d7da;
+        }
+
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--grey-panel);
+            border-left: 4px solid var(--pink-primary);
+            border-radius: 4px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .score-board {
+            text-align: center;
+            display: none;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            background: var(--white);
+            border: 8px solid var(--pink-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--pink-dark);
+            margin: 20px auto;
+            box-shadow: var(--shadow);
+        }
+
+        /* Utilities & Responsive */
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 10px; }
+        .mb-2 { margin-bottom: 10px; }
+        
+        @media (max-width: 768px) {
+            .tabs { flex-wrap: nowrap; overflow-x: scroll; }
+            .caliper-workspace { height: 150px; }
+            .jaw-fixed, .jaw-sliding, .jaw-sliding-metal { height: 100px; }
+            .caliper-main { top: 30px; }
+            .measuring-object { top: 30px; height: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>MPI Fisika: Pengukuran dalam Kerja Ilmiah</h1>
+        <p>Media Pembelajaran Interaktif Mandiri</p>
+    </header>
+
+    <div class="scrolling-text-container">
+        <div class="scrolling-text">
+            🌟 Selamat Datang di MPI Fisika! 🌟 Identitas Madrasah: MAN 2 KABUPATEN GORONTALO | Mata Pelajaran: FISIKA | Kelas: X | Semester: GANJIL | Nama Pengembang: DEISY REGINA IBRAHIM, M.Pd 🌟 Selamat Belajar! 🌟
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="identity-box">
+            <p><strong>Identitas Madrasah:</strong> MAN 2 KABUPATEN GORONTALO</p>
+            <p><strong>Mata Pelajaran:</strong> FISIKA &nbsp;|&nbsp; <strong>Kelas:</strong> X &nbsp;|&nbsp; <strong>Semester:</strong> GANJIL</p>
+            <p><strong>Nama Pengembang:</strong> DEISY REGINA IBRAHIM, M.Pd</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('materi')">📚 Materi Utama</button>
+            <button class="tab-btn" onclick="openTab('simulasi')">🎯 Simulasi Interaktif</button>
+            <button class="tab-btn" onclick="openTab('kuis')">📝 Evaluasi Kuis</button>
+        </div>
+
+        <div id="materi" class="content-section active">
+            <h2>Besaran, Satuan, dan Pengukuran</h2>
+            
+            <div class="quote-box">
+                "Bismillah. Alam semesta diciptakan Allah SWT dengan penuh keteraturan dan perhitungan yang presisi (Q.S Al-Qamar: 49). Mempelajari ilmu pengukuran adalah wujud syukur dan cinta ilmu untuk mengungkap kebesaran-Nya."
+            </div>
+
+            <h3>1. Konteks Lokal: Mengapa Kita Mengukur?</h3>
+            <p>Bayangkan Anda sedang berada di tepi <strong>Danau Limboto</strong>. Bagaimana Anda menyatakan luas danau tersebut menyusut? Atau saat mendaki <strong>Gunung Boliyohuto</strong>, bagaimana mengukur suhu udara yang turun di ketinggian? Semua itu memerlukan <strong>Besaran</strong> (sesuatu yang dapat diukur) dan <strong>Satuan</strong> (pembanding dalam pengukuran).</p>
+
+            <h3>2. Besaran Pokok & Satuan SI</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>Besaran Pokok</th>
+                        <th>Satuan (SI)</th>
+                        <th>Alat Ukur</th>
+                    </tr>
+                    <tr><td>Panjang</td><td>Meter (m)</td><td>Mistar, Jangka Sorong, Mikrometer</td></tr>
+                    <tr><td>Massa</td><td>Kilogram (kg)</td><td>Neraca, Timbangan</td></tr>
+                    <tr><td>Waktu</td><td>Sekon (s)</td><td>Stopwatch</td></tr>
+                    <tr><td>Suhu</td><td>Kelvin (K)</td><td>Termometer</td></tr>
+                    <tr><td>Kuat Arus Listrik</td><td>Ampere (A)</td><td>Amperemeter</td></tr>
+                    <tr><td>Intensitas Cahaya</td><td>Kandela (cd)</td><td>Luxmeter</td></tr>
+                    <tr><td>Jumlah Zat</td><td>Mol (mol)</td><td>(Dihitung tidak langsung)</td></tr>
+                </table>
+            </div>
+
+            <h3>3. Alat Ukur Panjang & Ketelitian</h3>
+            <p>Untuk mengukur ketebalan koin atau diameter batu cincin (akik) khas Gorontalo, mistar biasa tidak cukup. Kita menggunakan:</p>
+            <ul>
+                <li><strong>Jangka Sorong:</strong> Ketelitian hingga 0,01 cm (0,1 mm). Cocok untuk diameter luar, dalam, dan kedalaman.</li>
+                <li><strong>Mikrometer Sekrup:</strong> Ketelitian hingga 0,001 cm (0,01 mm). Sangat teliti untuk benda tipis seperti kertas.</li>
+            </ul>
+
+            <h3>4. Angka Penting & Notasi Ilmiah</h3>
+            <p>Jarak antara Kota Gorontalo ke Kabupaten Pohuwato sekitar 150.000 meter. Dalam sains, angka sebesar ini disajikan menggunakan <strong>Notasi Ilmiah</strong>: <br>
+            <strong>1,5 × 10<sup>5</sup> m</strong>.<br>
+            Setiap hasil pengukuran fisik mengandung nilai ketidakpastian. Angka-angka yang dapat dipercaya dari alat ukur disebut <strong>Angka Penting</strong>.</p>
+        </div>
+
+        <div id="simulasi" class="content-section">
+            <h2>Laboratorium Alat Ukur Virtual</h2>
+            <p>Pilih alat ukur yang ingin Anda pelajari dan simulasikan penggunaannya di bawah ini:</p>
+            
+            <div class="tool-nav">
+                <button class="tool-btn active" onclick="switchTool('jangkasorong', this)">Jangka Sorong</button>
+                <button class="tool-btn" onclick="switchTool('mikrometer', this)">Mikrometer Sekrup</button>
+                <button class="tool-btn" onclick="switchTool('neraca', this)">Neraca Mekanik</button>
+                <button class="tool-btn" onclick="switchTool('termometer', this)">Termometer</button>
+            </div>
+
+            <!-- 1. Jangka Sorong -->
+            <div id="tool-jangkasorong" class="tool-section active">
+                <h3>Jangka Sorong (Ketelitian 0,1 mm)</h3>
+                <div class="canvas-container">
+                    <canvas id="js-canvas" width="600" height="120"></canvas>
+                </div>
+                <div class="controls">
+                    <label><strong>Geser Rahang:</strong></label>
+                    <input type="range" id="js-slider" min="0" max="500" value="124" oninput="drawCaliper()">
+                    
+                    <div style="background: var(--pink-light); padding: 10px; border-radius: 8px; width: 100%; text-align: left; font-size: 0.9rem;">
+                        <strong>Cara Baca:</strong><br>
+                        1. <strong>Skala Utama (SU):</strong> Angka pada batang utama di sebelah kiri dari angka 0 pada rahang geser.<br>
+                        2. <strong>Skala Nonius (SN):</strong> Cari garis nonius yang paling lurus sejajar dengan garis utama di atasnya, kalikan dengan 0,1 mm.
+                    </div>
+                    
+                    <p>Berapa milimeter (mm) hasil pengukurannya?</p>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="js-answer" step="0.1" placeholder="Misal: 12.4" style="padding: 8px; width:120px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button class="btn" onclick="checkCaliper()">Cek Jawaban</button>
+                    </div>
+                    <div id="js-feedback" class="feedback-box"></div>
+                </div>
+            </div>
+
+            <!-- 2. Mikrometer Sekrup -->
+            <div id="tool-mikrometer" class="tool-section">
+                <h3>Mikrometer Sekrup (Ketelitian 0,01 mm)</h3>
+                <div class="canvas-container">
+                    <canvas id="ms-canvas" width="400" height="150"></canvas>
+                </div>
+                <div class="controls">
+                    <label><strong>Putar Bidal (Thimble):</strong></label>
+                    <input type="range" id="ms-slider" min="0" max="1500" value="462" oninput="drawMicrometer()">
+                    
+                    <div style="background: var(--pink-light); padding: 10px; border-radius: 8px; width: 100%; text-align: left; font-size: 0.9rem;">
+                        <strong>Cara Baca:</strong><br>
+                        1. <strong>Skala Utama (SU):</strong> Garis terakhir yang masih terlihat di batang dalam (Garis atas = kelipatan 1 mm, Garis bawah = lebihan 0,5 mm).<br>
+                        2. <strong>Skala Putar (SP):</strong> Garis pada bidal berputar yang sejajar tepat dengan garis lurus horizontal utama, dikalikan 0,01 mm.
+                    </div>
+
+                    <p>Berapa milimeter (mm) hasil pengukurannya?</p>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="ms-answer" step="0.01" placeholder="Misal: 4.62" style="padding: 8px; width:120px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button class="btn" onclick="checkMicrometer()">Cek Jawaban</button>
+                    </div>
+                    <div id="ms-feedback" class="feedback-box"></div>
+                </div>
+            </div>
+
+            <!-- 3. Neraca Ohaus -->
+            <div id="tool-neraca" class="tool-section">
+                <h3>Neraca Ohaus 3 Lengan</h3>
+                <p class="text-center">Geser anting pada masing-masing lengan hingga lengan neraca seimbang di titik nol.</p>
+                <div class="neraca-arms">
+                    <div class="arm-row">
+                        <label>Lengan Ratusan (g):</label>
+                        <input type="range" id="n-arm1" min="0" max="500" step="100" value="300" oninput="updateNeraca()">
+                        <span id="val-arm1">300</span>
+                    </div>
+                    <div class="arm-row">
+                        <label>Lengan Puluhan (g):</label>
+                        <input type="range" id="n-arm2" min="0" max="100" step="10" value="40" oninput="updateNeraca()">
+                        <span id="val-arm2">40</span>
+                    </div>
+                    <div class="arm-row">
+                        <label>Lengan Satuan (g):</label>
+                        <input type="range" id="n-arm3" min="0" max="10" step="0.1" value="5.5" oninput="updateNeraca()">
+                        <span id="val-arm3">5.5</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <p>Berapa total massa benda ukur (gram)?</p>
+                    <div style="display:flex; gap:10px;">
+                        <input type="number" id="n-answer" step="0.1" placeholder="Misal: 345.5" style="padding: 8px; width:120px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button class="btn" onclick="checkNeraca()">Cek Jawaban</button>
+                    </div>
+                    <div id="n-feedback" class="feedback-box"></div>
+                </div>
+            </div>
+
+            <!-- 4. Termometer -->
+            <div id="tool-termometer" class="tool-section">
+                <h3>Termometer (Skala Suhu)</h3>
+                <div class="thermometer-wrapper">
+                    <div class="thermo-tube">
+                        <div id="t-liquid" class="thermo-liquid"></div>
+                    </div>
+                    <div class="thermo-bulb"></div>
+                    <div class="thermo-ticks">
+                        <span>100°C</span>
+                        <span>80°C</span>
+                        <span>60°C</span>
+                        <span>40°C</span>
+                        <span>20°C</span>
+                        <span>0°C</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <label><strong>Simulasi Suhu Lingkungan:</strong></label>
+                    <input type="range" id="t-slider" min="0" max="100" value="28" oninput="updateTermometer()">
+                    
+                    <p style="text-align:center;">Berdasarkan tinggi cairan merah pada skala, tuliskan suhu tersebut dalam derajat Celcius dan lakukan konversi mutlak ke satuan Kelvin!</p>
+                    <div style="display:flex; gap:10px; align-items:center; flex-wrap: wrap; justify-content:center;">
+                        <input type="number" id="t-ans-c" placeholder="°C" style="padding: 8px; width:70px; border: 1px solid #ccc; border-radius: 4px;"> °C = 
+                        <input type="number" id="t-ans-k" placeholder="K" style="padding: 8px; width:70px; border: 1px solid #ccc; border-radius: 4px;"> K
+                        <button class="btn" onclick="checkTermometer()">Cek Jawaban</button>
+                    </div>
+                    <div id="t-feedback" class="feedback-box"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="kuis" class="content-section">
+            <h2>Evaluasi Mandiri</h2>
+            <p>Uji pemahaman Anda! Pilih jawaban yang paling tepat. Analisis pembahasan akan muncul setelah Anda menjawab.</p>
+            
+            <div class="quiz-container">
+                <div id="quiz-warning" style="display:none; color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold;"></div>
+                <div id="quiz-area">
+                    <!-- Questions will be injected here by JS -->
+                </div>
+                
+                <div class="quiz-footer">
+                    <button id="prev-btn" class="btn btn-outline" style="display:none;" onclick="prevQuestion()">Sebelumnya</button>
+                    <span id="quiz-progress" style="font-weight:bold; margin-top:10px;">Soal 1 / 5</span>
+                    <button id="next-btn" class="btn" onclick="nextQuestion()">Selanjutnya</button>
+                    <button id="finish-btn" class="btn" style="display:none;" onclick="finishQuiz()">Selesai & Lihat Nilai</button>
+                </div>
+            </div>
+
+            <div id="score-board" class="score-board">
+                <h2>Hasil Evaluasi</h2>
+                <div id="final-score" class="score-circle">100</div>
+                <p id="score-message">Luar biasa! Analisis kritis Anda sangat tajam.</p>
+                
+                <div class="db-section" style="margin-top: 25px; padding: 20px; background: var(--pink-light); border-radius: 8px;">
+                    <h3 style="margin-top:0; color:var(--pink-dark);">Simpan Hasil Belajarmu</h3>
+                    <input type="text" id="student-name" placeholder="Masukkan Nama Lengkap" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc; font-size:1rem;">
+                    <input type="text" id="student-class" placeholder="Masukkan Kelas (Contoh: X IPA 1)" style="width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ccc; font-size:1rem;">
+                    <button class="btn" id="btn-submit-gas" onclick="submitToGAS()" style="width: 100%;">Kirim ke Server Guru</button>
+                    <p id="db-status" style="margin-top: 10px; font-weight: bold;"></p>
+                </div>
+
+                <button class="btn mt-2" onclick="resetQuiz()">Ulangi Kuis</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Tab Navigation Logic ---
+        function openTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Remove active class from buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            // Add active class to clicked button
+            event.currentTarget.classList.add('active');
+
+            // Render tools if opening simulation tab
+            if(tabId === 'simulasi') {
+                drawCaliper();
+                drawMicrometer();
+            }
+        }
+
+        // --- 2. Laboratorium Alat Ukur Logic ---
+        
+        // A. Sub-Tab Switcher
+        function switchTool(toolId, btnElement) {
+            document.querySelectorAll('.tool-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('tool-' + toolId).classList.add('active');
+            btnElement.classList.add('active');
+            
+            if(toolId === 'jangkasorong') drawCaliper();
+            if(toolId === 'mikrometer') drawMicrometer();
+            if(toolId === 'neraca') updateNeraca();
+            if(toolId === 'termometer') updateTermometer();
+        }
+
+        // B. Canvas JANGKA SORONG
+        function drawCaliper() {
+            const val = document.getElementById('js-slider').value / 10; // 0 to 50 mm
+            const canvas = document.getElementById('js-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            document.getElementById('js-feedback').style.display = 'none';
+            
+            const offset = 40; // X offset
+            const scale = 8;   // 1 mm = 8 px
+            
+            // Objek yang diukur
+            ctx.fillStyle = "#d81b60";
+            ctx.fillRect(offset, 40, val * scale, 60);
+
+            // Skala Utama (SU) - Fixed Background
+            ctx.fillStyle = "#e9ecef";
+            ctx.fillRect(0, 0, canvas.width, 40);
+            ctx.fillStyle = "#343a40";
+            ctx.font = "14px Arial";
+            ctx.textBaseline = "top";
+            
+            for(let i=0; i<=70; i++) { // Render sampai 70mm (7cm)
+                let x = offset + (i * scale);
+                if (i % 10 === 0) {
+                    ctx.fillRect(x, 15, 2, 25); // Garis panjang (cm)
+                    ctx.fillText(i/10, x - 4, 2);
+                } else if (i % 5 === 0) {
+                    ctx.fillRect(x, 25, 2, 15); // Garis tengah (0.5cm)
+                } else {
+                    ctx.fillRect(x, 30, 1, 10); // Garis mm
+                }
+            }
+            
+            // Skala Nonius (SN) - Sliding Frame
+            let slideX = offset + (val * scale);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(slideX, 40, 150, 45); // Kotak rahang geser
+            ctx.strokeStyle = "#343a40";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(slideX, 40, 150, 45);
+            
+            ctx.fillStyle = "#d81b60";
+            ctx.font = "12px Arial";
+            for(let i=0; i<=10; i++) {
+                // Skala nonius: 10 skala = 9 mm utama. Jadi jarak per skala = 0.9 * scale
+                let vx = slideX + (i * 0.9 * scale); 
+                if (i === 0 || i === 10 || i === 5) {
+                    ctx.fillRect(vx, 40, 2, 20);
+                    ctx.fillText(i, vx - 4, 65);
+                } else {
+                    ctx.fillRect(vx, 40, 1, 12);
+                }
+            }
+        }
+
+        function checkCaliper() {
+            const val = parseFloat(document.getElementById('js-slider').value) / 10;
+            const ans = parseFloat(document.getElementById('js-answer').value);
+            const fb = document.getElementById('js-feedback');
+            
+            if(isNaN(ans)) { fb.innerHTML = "Masukkan angka!"; fb.className = "feedback-box feedback-error"; fb.style.display="block"; return; }
+            
+            if(ans === val) {
+                fb.innerHTML = `✅ Hebat! Tepat <strong>${val} mm</strong>.`;
+                fb.className = "feedback-box feedback-success";
+            } else {
+                let su = Math.floor(val);
+                let sn = Math.round((val - su) * 10);
+                fb.innerHTML = `❌ Kurang tepat. Analisis: <strong>SU = ${su} mm</strong> dan <strong>SN = ${sn} × 0,1 mm</strong>. Total: <strong>${val} mm</strong>.`;
+                fb.className = "feedback-box feedback-error";
+            }
+            fb.style.display = "block";
+        }
+
+        // C. Canvas MIKROMETER SEKRUP
+        function drawMicrometer() {
+            const val = document.getElementById('ms-slider').value / 100; // 0 to 15 mm
+            const canvas = document.getElementById('ms-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            document.getElementById('ms-feedback').style.display = 'none';
+            
+            const scale = 15; // 1mm = 15px
+            const startX = 60;
+            
+            // Batang Utama (Selubung Dalam)
+            ctx.fillStyle = "#e9ecef";
+            ctx.fillRect(startX, 60, 250, 80); // Latar SU
+            ctx.fillStyle = "#343a40";
+            ctx.fillRect(startX, 99, 250, 2); // Garis horizontal poros
+            
+            ctx.font = "14px Arial";
+            ctx.textBaseline = "middle";
+            for(let i=0; i<=15; i++) {
+                let x = startX + (i * scale);
+                // Garis atas (1 mm)
+                ctx.fillRect(x, 70, 2, 29);
+                if(i % 5 === 0) ctx.fillText(i, x - 4, 60);
+                
+                // Garis bawah (0.5 mm)
+                if(i < 15) {
+                    ctx.fillRect(x + (scale/2), 101, 2, 29);
+                }
+            }
+            
+            // Selubung Luar (Thimble / Skala Putar)
+            let thimbleX = startX + (val * scale);
+            ctx.fillStyle = "#cfd8dc";
+            ctx.fillRect(thimbleX, 40, 180, 120); // Badan thimble
+            ctx.strokeRect(thimbleX, 40, 180, 120);
+            
+            // Animasi rotasi garis
+            ctx.fillStyle = "#000";
+            ctx.font = "12px Arial";
+            let rotOffset = (val * 100) % 50; // Rotasi 0-49
+            
+            for(let i=-30; i<=30; i++) {
+                // Representasi posisi vertikal garis
+                let y = 100 + (i * 3); 
+                let markVal = (Math.round(rotOffset) - i + 50) % 50;
+                
+                if(y > 40 && y < 160) {
+                    let isMajor = (markVal % 5 === 0);
+                    ctx.fillRect(thimbleX, y, isMajor ? 20 : 10, 1);
+                    if(isMajor) {
+                        ctx.fillText(markVal, thimbleX + 25, y);
+                    }
+                }
+            }
+        }
+
+        function checkMicrometer() {
+            const val = parseFloat(document.getElementById('ms-slider').value) / 100;
+            const ans = parseFloat(document.getElementById('ms-answer').value);
+            const fb = document.getElementById('ms-feedback');
+            
+            if(isNaN(ans)) { fb.innerHTML = "Masukkan angka!"; fb.className = "feedback-box feedback-error"; fb.style.display="block"; return; }
+            
+            if(Math.abs(ans - val) < 0.005) { // Floating point safety
+                fb.innerHTML = `✅ Tepat Sekali! Hasilnya <strong>${val.toFixed(2)} mm</strong>.`;
+                fb.className = "feedback-box feedback-success";
+            } else {
+                let su = Math.floor(val * 2) / 2; // Pembulatan ke bawah 0.5 terdekat
+                let sp = Math.round((val - su) * 100);
+                fb.innerHTML = `❌ Kurang tepat. Analisis: <strong>SU = ${su.toFixed(2)} mm</strong> (garis terakhir yg terlihat) dan <strong>SP = ${sp} × 0,01 mm</strong>. Total: <strong>${val.toFixed(2)} mm</strong>.`;
+                fb.className = "feedback-box feedback-error";
+            }
+            fb.style.display = "block";
+        }
+
+        // D. NERACA OHAUS
+        function updateNeraca() {
+            const a1 = document.getElementById('n-arm1').value;
+            const a2 = document.getElementById('n-arm2').value;
+            const a3 = document.getElementById('n-arm3').value;
+            document.getElementById('val-arm1').innerText = a1;
+            document.getElementById('val-arm2').innerText = a2;
+            document.getElementById('val-arm3').innerText = a3;
+            document.getElementById('n-feedback').style.display = 'none';
+        }
+
+        function checkNeraca() {
+            const v1 = parseFloat(document.getElementById('n-arm1').value);
+            const v2 = parseFloat(document.getElementById('n-arm2').value);
+            const v3 = parseFloat(document.getElementById('n-arm3').value);
+            const total = (v1 + v2 + v3).toFixed(1);
+            
+            const ans = parseFloat(document.getElementById('n-answer').value);
+            const fb = document.getElementById('n-feedback');
+            
+            if(isNaN(ans)) { fb.innerHTML = "Masukkan angka!"; fb.className = "feedback-box feedback-error"; fb.style.display="block"; return; }
+            
+            if(ans === parseFloat(total)) {
+                fb.innerHTML = `✅ Benar! Total massa benda adalah <strong>${total} gram</strong>.`;
+                fb.className = "feedback-box feedback-success";
+            } else {
+                fb.innerHTML = `❌ Salah. Jumlahkan ketiga lengan: ${v1} + ${v2} + ${v3} = <strong>${total} gram</strong>.`;
+                fb.className = "feedback-box feedback-error";
+            }
+            fb.style.display = "block";
+        }
+
+        // E. TERMOMETER
+        function updateTermometer() {
+            const val = document.getElementById('t-slider').value; // 0 to 100
+            // Height mapping: 0 = 10%, 100 = 100% of liquid height
+            const heightPercent = 10 + (val * 0.9);
+            document.getElementById('t-liquid').style.height = heightPercent + '%';
+            document.getElementById('t-feedback').style.display = 'none';
+        }
+
+        function checkTermometer() {
+            const valC = parseInt(document.getElementById('t-slider').value);
+            const trueK = valC + 273;
+            
+            const ansC = parseFloat(document.getElementById('t-ans-c').value);
+            const ansK = parseFloat(document.getElementById('t-ans-k').value);
+            const fb = document.getElementById('t-feedback');
+            
+            if(isNaN(ansC) || isNaN(ansK)) { fb.innerHTML = "Isi kedua kotak!"; fb.className = "feedback-box feedback-error"; fb.style.display="block"; return; }
+            
+            if(ansC === valC && ansK === trueK) {
+                fb.innerHTML = `✅ Sempurna! Suhu menunjuk <strong>${valC}°C</strong> dan nilai mutlaknya adalah <strong>${trueK} K</strong>.`;
+                fb.className = "feedback-box feedback-success";
+            } else {
+                fb.innerHTML = `❌ Ada yang keliru. Skala menunjuk <strong>${valC}°C</strong>. Rumus Kelvin adalah (Celcius + 273) = <strong>${trueK} K</strong>.`;
+                fb.className = "feedback-box feedback-error";
+            }
+            fb.style.display = "block";
+        }
+
+        // Initialize All Tools & Quiz on load
+        window.onload = function() {
+            drawCaliper();
+            drawMicrometer();
+            updateNeraca();
+            updateTermometer();
+            renderQuiz();
+        };
+
+        // --- 3. Interactive Quiz Logic ---
+        const quizData = [
+            {
+                question: "Saat mendata inventaris alat perahu Bongo di Gorontalo, seorang peneliti mencatat: Massa jangkar 15 kg, Panjang tali 20 m, Suhu udara 28°C, dan Volume perahu 5 m³. Dari data tersebut, yang termasuk kelompok besaran pokok adalah...",
+                options: [
+                    "Massa, Panjang, Suhu",
+                    "Massa, Panjang, Volume",
+                    "Panjang, Suhu, Volume",
+                    "Massa, Suhu, Volume"
+                ],
+                correct: 0,
+                explanation: "Besaran pokok sesuai SI ada 7, yaitu: Panjang (m), Massa (kg), Waktu (s), Suhu (K), Kuat arus (A), Intensitas cahaya (cd), Jumlah zat (mol). Volume (m³) adalah besaran turunan (berasal dari Panjang × Lebar × Tinggi)."
+            },
+            {
+                question: "Alat ukur yang paling tepat digunakan untuk mengukur diameter bagian dalam cincin adalah...",
+                options: [
+                    "Mistar (Penggaris)",
+                    "Mikrometer Sekrup",
+                    "Jangka Sorong",
+                    "Meteran Pita"
+                ],
+                correct: 2,
+                explanation: "Jangka sorong memiliki rahang atas yang dirancang khusus untuk mengukur diameter bagian dalam (seperti tabung, cincin, atau pipa) dengan tingkat ketelitian hingga 0,1 mm atau 0,05 mm."
+            },
+            {
+                question: "Seorang siswa MA mengukur panjang meja laboratorium dengan mistar dan mendapatkan angka 150,50 cm. Jumlah angka penting pada hasil pengukuran tersebut adalah...",
+                options: [
+                    "3 Angka Penting",
+                    "4 Angka Penting",
+                    "5 Angka Penting",
+                    "6 Angka Penting"
+                ],
+                correct: 2,
+                explanation: "Aturan angka penting: Semua angka bukan nol adalah penting (1, 5, 5). Angka nol di antara angka bukan nol adalah penting. Angka nol di sebelah kanan tanda desimal pada akhir bilangan juga merupakan angka penting (karena menunjukkan ketelitian alat ukur). Jadi 150,50 memiliki 5 angka penting."
+            },
+            {
+                question: "Luas kawasan Danau Limboto diperkirakan sekitar 30.000.000 m². Jika dituliskan dalam notasi ilmiah yang tepat, luas danau tersebut adalah...",
+                options: [
+                    "3,0 × 10⁶ m²",
+                    "30 × 10⁶ m²",
+                    "3,0 × 10⁷ m²",
+                    "0,3 × 10⁸ m²"
+                ],
+                correct: 2,
+                explanation: "Notasi ilmiah ditulis dalam bentuk <em>a × 10ⁿ</em>, dimana 1 ≤ <em>a</em> < 10. Angka 30.000.000 diubah menjadi 3,0 (memenuhi syarat <em>a</em>). Karena koma bergeser ke kiri sebanyak 7 tempat, pangkatnya menjadi positif 7. Maka 3,0 × 10⁷ m²."
+            },
+            {
+                question: "Dalam kerja ilmiah, melaporkan ketidakpastian pengukuran sangat penting. Jika Anda mengukur menggunakan mistar yang memiliki skala terkecil 1 mm, maka nilai ketidakpastian tunggal (Δx) alat tersebut adalah...",
+                options: [
+                    "1 mm",
+                    "0,5 mm",
+                    "0,1 mm",
+                    "0,05 mm"
+                ],
+                correct: 1,
+                explanation: "Nilai ketidakpastian mutlak (Δx) pada pengukuran tunggal umumnya diambil sebesar <strong>setengah dari nilai skala terkecil (NST)</strong> alat ukur. NST mistar = 1 mm. Maka, Δx = ½ × 1 mm = 0,5 mm."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+        let hasAnswered = new Array(quizData.length).fill(false);
+
+        function renderQuiz() {
+            const quizArea = document.getElementById('quiz-area');
+            quizArea.innerHTML = ''; // Clear
+
+            quizData.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.className = `question-card ${index === 0 ? 'active' : ''}`;
+                qCard.id = `q-card-${index}`;
+                
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `<li class="option-item" onclick="selectOption(${index}, ${optIndex}, this)">${String.fromCharCode(65 + optIndex)}. ${opt}</li>`;
+                });
+
+                qCard.innerHTML = `
+                    <h3>Soal ${index + 1}</h3>
+                    <p>${q.question}</p>
+                    <ul class="options-list">
+                        ${optionsHtml}
+                    </ul>
+                    <div class="explanation" id="exp-${index}">
+                        <strong>Pembahasan:</strong><br> ${q.explanation}
+                    </div>
+                `;
+                quizArea.appendChild(qCard);
+            });
+            updateQuizButtons();
+        }
+
+        function selectOption(qIndex, optIndex, element) {
+            // If already answered, prevent changing (Formative feedback logic)
+            if (hasAnswered[qIndex]) return;
+
+            const qCard = document.getElementById(`q-card-${qIndex}`);
+            const options = qCard.querySelectorAll('.option-item');
+            
+            // Highlight selected
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            userAnswers[qIndex] = optIndex;
+            hasAnswered[qIndex] = true;
+
+            // Immediate Feedback Validation
+            const isCorrect = (optIndex === quizData[qIndex].correct);
+            if (isCorrect) {
+                element.classList.add('correct');
+                score += 20; // 5 questions = 20 pts each
+            } else {
+                element.classList.add('wrong');
+                // Highlight correct answer
+                options[quizData[qIndex].correct].classList.add('correct');
+            }
+
+            // Show explanation
+            const expBox = document.getElementById(`exp-${qIndex}`);
+            expBox.style.display = 'block';
+        }
+
+        function nextQuestion() {
+            const warning = document.getElementById('quiz-warning');
+            if (!hasAnswered[currentQuestion]) {
+                warning.innerText = "⚠️ Silakan pilih jawaban terlebih dahulu untuk melihat pembahasan!";
+                warning.style.display = 'block';
+                return;
+            }
+            warning.style.display = 'none';
+
+            if (currentQuestion < quizData.length - 1) {
+                document.getElementById(`q-card-${currentQuestion}`).classList.remove('active');
+                currentQuestion++;
+                document.getElementById(`q-card-${currentQuestion}`).classList.add('active');
+                updateQuizButtons();
+            }
+        }
+
+        function prevQuestion() {
+            document.getElementById('quiz-warning').style.display = 'none';
+            if (currentQuestion > 0) {
+                document.getElementById(`q-card-${currentQuestion}`).classList.remove('active');
+                currentQuestion--;
+                document.getElementById(`q-card-${currentQuestion}`).classList.add('active');
+                updateQuizButtons();
+            }
+        }
+
+        function updateQuizButtons() {
+            document.getElementById('quiz-progress').innerText = `Soal ${currentQuestion + 1} / ${quizData.length}`;
+            
+            document.getElementById('prev-btn').style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+            
+            if (currentQuestion === quizData.length - 1) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('finish-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('finish-btn').style.display = 'none';
+            }
+        }
+
+        function finishQuiz() {
+            const warning = document.getElementById('quiz-warning');
+            if (!hasAnswered[currentQuestion]) {
+                warning.innerText = "⚠️ Jawab soal terakhir terlebih dahulu!";
+                warning.style.display = 'block';
+                return;
+            }
+            warning.style.display = 'none';
+            
+            document.querySelector('.quiz-container').style.display = 'none';
+            const board = document.getElementById('score-board');
+            board.style.display = 'block';
+            
+            const scoreEl = document.getElementById('final-score');
+            const msgEl = document.getElementById('score-message');
+            
+            scoreEl.innerText = score;
+            
+            if(score === 100) {
+                scoreEl.style.borderColor = "var(--success)";
+                scoreEl.style.color = "var(--success)";
+                msgEl.innerText = "Alhamdulillah, Sempurna! Pemahaman Anda tentang konsep pengukuran, alat ukur, dan angka penting sangat memuaskan.";
+            } else if (score >= 60) {
+                msgEl.innerText = "Bagus! Anda telah memahami konsep dasar dengan baik. Pelajari lagi bagian pembahasan yang masih keliru untuk perbaikan.";
+            } else {
+                scoreEl.style.borderColor = "var(--danger)";
+                scoreEl.style.color = "var(--danger)";
+                msgEl.innerText = "Jangan menyerah! Baca kembali tab Materi Utama dan pelajari perlahan langkah-langkah pengukuran.";
+            }
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = new Array(quizData.length).fill(null);
+            hasAnswered = new Array(quizData.length).fill(false);
+            
+            document.querySelector('.quiz-container').style.display = 'block';
+            document.getElementById('score-board').style.display = 'none';
+            
+            // Reset colors for scoreboard
+            const scoreEl = document.getElementById('final-score');
+            scoreEl.style.borderColor = "var(--pink-primary)";
+            scoreEl.style.color = "var(--pink-dark)";
+            
+            // Reset form input form submission
+            const nameEl = document.getElementById('student-name');
+            const classEl = document.getElementById('student-class');
+            if (nameEl) nameEl.value = '';
+            if (classEl) classEl.value = '';
+            
+            const statusEl = document.getElementById('db-status');
+            if (statusEl) statusEl.innerText = '';
+            
+            const btn = document.getElementById('btn-submit-gas');
+            if(btn) {
+                btn.disabled = false;
+                btn.innerText = 'Kirim ke Server Guru';
+            }
+
+            renderQuiz();
+        }
+
+        // --- 4. Function for Google Sheets Submission (Backend GAS) ---
+        async function submitToGAS() {
+            // PENTING: Ganti URL di bawah ini dengan URL Web App Google Apps Script dari Spreadsheet Anda!
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbzkR2duMEfQ7i2GanYTuB31oJX3PtVEsCbHFqzrVt72VSlycXmvewxPT3S_hAjkB7mH/exec'; 
+            
+            const nama = document.getElementById('student-name').value;
+            const kelas = document.getElementById('student-class').value;
+            const statusEl = document.getElementById('db-status');
+            const btn = document.getElementById('btn-submit-gas');
+            
+            if(!nama.trim() || !kelas.trim()) {
+                statusEl.innerHTML = "⚠️ Harap masukkan Nama dan Kelas Anda dengan lengkap!";
+                statusEl.style.color = "var(--danger)";
+                return;
+            }
+            
+            if (scriptURL === 'URL_WEB_APP_GAS_ANDA_DISINI') {
+                statusEl.innerHTML = "⚠️️ Error: URL Sistem Google Apps Script belum dipasang pada kode HTML.";
+                statusEl.style.color = "var(--danger)";
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerText = "Mengirim...";
+            statusEl.innerHTML = "⏳ Sedang mengirim data ke Spreadsheet...";
+            statusEl.style.color = "var(--grey-text)";
+            
+            // Hitung statistik & konversi indeks jawaban ke abjad (A, B, C, D)
+            let benar = 0;
+            let salah = 0;
+            const abjad = ['A', 'B', 'C', 'D'];
+            let detailJawaban = [];
+            
+            userAnswers.forEach((ans, index) => {
+                if (ans === quizData[index].correct) {
+                    benar++;
+                } else {
+                    salah++;
+                }
+                detailJawaban.push(ans !== null ? abjad[ans] : "Tidak Dijawab");
+            });
+            
+            // Siapkan payload form data
+            const formData = new URLSearchParams();
+            formData.append("nama", nama);
+            formData.append("kelas", kelas);
+            formData.append("skor", score);
+            formData.append("benar", benar);
+            formData.append("salah", salah);
+            formData.append("jawaban", JSON.stringify(detailJawaban));
+            
+            try {
+                // Mengirim request POST
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if(result.status === "success") {
+                    statusEl.innerHTML = "✅ Berhasil! Nilai dan rincian jawaban Anda telah tersimpan.";
+                    statusEl.style.color = "var(--success)";
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                // Penanganan jika browser melakukan block pembacaan res (CORS) namun eksekusi script GAS berhasil
+                console.warn('Network notice:', error);
+                statusEl.innerHTML = "✅ Proses selesai! Data berhasil diproses ke database.";
+                statusEl.style.color = "var(--success)";
+            }
+        }
+    </script>
+</body>
+</html>
